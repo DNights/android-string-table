@@ -144,6 +144,8 @@ object Sheet2Strings {
         value = value.replace("\"", "\\\"")
         value = value.replace("\\\\\"", "\\\"")
         value = value.replace("\n", "\\n")
+        value = value.replace("<![CDATA[", "")
+        value = value.replace("]]>", "")
         return value
     }
 
