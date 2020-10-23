@@ -11,19 +11,26 @@ object StringTableGenerator {
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        if (args.size < 2) {
-            throw InvalidParameterException("<source xlsx> <res path> <sheet name>")
+        if (args.size < 3) {
+            throw InvalidParameterException("<platform (AOS,IOS)> <source xlsx> <res path> <sheet name>")
         }
         println("Generate string tables.")
-        println("\tsource: " + args[0])
-        println("\tres: " + args[1])
-        val source = File(args[0])
-        val pathRes = File(args[1])
+        println("\tplatform: " + args[0])
+        println("\tsource: " + args[1])
+        println("\tres: " + args[2])
+        val platform = args[0]
+        val source = File(args[1])
+        val pathRes = File(args[2])
         val inputStream = FileInputStream(source)
         val workbook = XSSFWorkbook(inputStream)
-        val targetSheetName = if (args.size > 2) args[2] else null
+        val targetSheetName = if (args.size > 3) args[3] else null
 
-        Sheet2Strings.convert(getTargetSheet(targetSheetName, workbook), pathRes)
+        when(platform){
+            "AOS" -> { Sheet2Strings.convert(getTargetSheet(targetSheetName, workbook), pathRes)}
+            "IOS" -> { Sheet2StringsForIOS.convert(getTargetSheet(targetSheetName, workbook), pathRes)}
+            else -> throw InvalidParameterException("Can you enter platform is AOS or IOS")
+        }
+
         println("Completed.")
         inputStream.close()
     }

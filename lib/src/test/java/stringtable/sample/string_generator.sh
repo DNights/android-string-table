@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar ./lib.jar ./StringTable.xlsx ./res
+java -jar ./lib.jar AOS ./StringTable.xlsx ./res
